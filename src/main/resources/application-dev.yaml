@@ -1,6 +1,9 @@
 server:
   port: ${SERVER_PORT:8081}
 
+web:
+  allowedOrigins: ${ALLOWED_ORIGINS:http://localhost}
+
 spring:
   application:
     name: odontaval
