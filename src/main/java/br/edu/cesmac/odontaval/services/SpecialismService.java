@@ -5,13 +5,13 @@ import br.edu.cesmac.odontaval.dtos.requests.SpecialismRequestDTO;
 import java.util.List;
 
 public interface SpecialismService {
-    SpecialismEntity createSpecialism(SpecialismRequestDTO data);
+  void insert(SpecialismEntity specialismEntity);
 
-    List<SpecialismEntity> getAllSpecialisms();
+  List<SpecialismEntity> findAll();
 
-    SpecialismEntity getSpecialismById(Long id);
+  SpecialismEntity findById(Long id);
 
-    SpecialismEntity updateSpecialism(Long id, SpecialismRequestDTO data);
+  void update(Long id, SpecialismEntity specialismEntity);
 
-    void deleteSpecialism(Long id);
+  void delete(Long id);
 }

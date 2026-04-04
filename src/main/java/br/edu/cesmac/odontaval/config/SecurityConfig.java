@@ -40,13 +40,21 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.POST, "/api/auth/register")
                     .permitAll()
 
-                    // h2
-                    .requestMatchers("/h2-console/**")
-                    .permitAll()
+                    // specialism
+                    .requestMatchers(HttpMethod.POST, "/api/v1/specialisms")
+                    .hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.GET, "/api/v1/specialisms")
+                    .hasAnyRole("ADMIN", "PROFESSOR")
+                    .requestMatchers(HttpMethod.GET, "/api/v1/specialisms/{id}")
+                    .hasAnyRole("ADMIN", "PROFESSOR")
+                    .requestMatchers(HttpMethod.PUT, "/api/v1/specialisms/{id}")
+                    .hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.DELETE, "/api/v1/specialisms/{id}")
+                    .hasRole("ADMIN")
 
                     // all
                     .anyRequest()
-                    .authenticated())
+                    .hasAnyRole("ADMIN", "STUDENT", "PROFESSOR"))
         // jwt filter
         .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
     return http.build();
@@ -69,7 +77,7 @@ public class SecurityConfig {
 
                     // all
                     .anyRequest()
-                    .hasAnyRole("ROLE_ADMIN", "ROLE_STUDENT", "ROLE_PROFESSOR"))
+                    .hasAnyRole("ADMIN", "STUDENT", "PROFESSOR"))
         // jwt filter
         .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
     return http.build();
