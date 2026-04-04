@@ -4,6 +4,12 @@ server:
 web:
   allowedOrigins: ${ALLOWED_ORIGINS:http://localhost}
 
+security:
+  token:
+    issuer: ${TOKEN_ISSUER:LockBox}
+    secret: ${TOKEN_SECRET:secret}
+    duration: ${TOKEN_DURATION:15m}
+
 spring:
   application:
     name: odontaval
