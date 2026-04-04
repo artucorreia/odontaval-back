@@ -23,10 +23,6 @@ public class RoleEntity extends BaseEntity {
   @Column(nullable = false, unique = true, length = 50)
   private String name;
 
-  @ManyToMany
-  @JoinTable(
-      name = "users_roles",
-      joinColumns = @JoinColumn(name = "role_id", nullable = false),
-      inverseJoinColumns = @JoinColumn(name = "user_id", nullable = false))
+  @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
   private Set<UserEntity> users = new HashSet<>();
 }

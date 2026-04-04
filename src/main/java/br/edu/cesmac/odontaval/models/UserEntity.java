@@ -34,6 +34,10 @@ public class UserEntity extends BaseEntity {
   @JoinColumn(name = "specialism_id", referencedColumnName = "id")
   private SpecialismEntity specialism;
 
-  @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
+  @ManyToMany(fetch = FetchType.EAGER)
+  @JoinTable(
+      name = "users_roles",
+      joinColumns = @JoinColumn(name = "user_id", nullable = false),
+      inverseJoinColumns = @JoinColumn(name = "role_id", nullable = false))
   private Set<RoleEntity> roles = new HashSet<>();
 }
