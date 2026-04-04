@@ -1,4 +1,4 @@
-package br.edu.cesmac.odontaval.DTOs.responses;
+package br.edu.cesmac.odontaval.dtos.responses;
 
 public class SpecialismResponseDTO {
     public Long id;

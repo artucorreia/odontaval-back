@@ -3,7 +3,7 @@ package br.edu.cesmac.odontaval.controllers;
 import br.edu.cesmac.odontaval.controllers.mappers.SpecialismMapper;
 import br.edu.cesmac.odontaval.dtos.ResponseDTO;
 import br.edu.cesmac.odontaval.dtos.requests.SpecialismRequestDTO;
-import br.edu.cesmac.odontaval.DTOs.responses.SpecialismResponseDTO;
+import br.edu.cesmac.odontaval.dtos.responses.SpecialismResponseDTO;
 import br.edu.cesmac.odontaval.models.SpecialismEntity;
 import br.edu.cesmac.odontaval.services.SpecialismService;
 import lombok.RequiredArgsConstructor;

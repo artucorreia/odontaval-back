@@ -1,7 +1,6 @@
 package br.edu.cesmac.odontaval.services;
 
 import br.edu.cesmac.odontaval.models.SpecialismEntity;
-import br.edu.cesmac.odontaval.dtos.requests.SpecialismRequestDTO;
 import java.util.List;
 
 public interface SpecialismService {
