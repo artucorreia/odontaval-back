@@ -35,5 +35,5 @@ public class UserEntity extends BaseEntity {
   private SpecialismEntity specialism;
 
   @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
-  private HashSet<RoleEntity> roles;
+  private Set<RoleEntity> roles = new HashSet<>();
 }
