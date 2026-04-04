@@ -1,0 +1,22 @@
+server:
+  port: ${SERVER_PORT:8081}
+
+spring:
+  application:
+    name: odontaval
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${DB_URL:jdbc:postgresql://localhost:2345/odontaval_db}
+    username: ${DB_USER:developer}
+    password: ${DB_PASSWORD:12345678}
+    jpa:
+      open-in-view: false
+      hibernate:
+        ddl-auto: none
+      show-sql: false
+
+spring-doc:
+  pathsToMatch:
+    - /api/**
+  swagger-ui:
+    use-root-path: true

@@ -1,0 +1,20 @@
+services:
+  # postgres
+  postgres:
+    image: postgres:17-alpine
+    container_name: odontaval-postgres
+    ports:
+      - "2345:5432"
+    env_file:
+      - ./../.env
+    restart: on-failure:2
+    networks:
+      - app
+    volumes:
+      - odontaval_data:/var/lib/postgresql/data
+
+volumes:
+  odontaval_data:
+
+networks:
+  app:
