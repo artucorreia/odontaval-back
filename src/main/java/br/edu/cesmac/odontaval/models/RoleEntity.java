@@ -22,7 +22,4 @@ public class RoleEntity extends BaseEntity {
 
   @Column(nullable = false, unique = true, length = 50)
   private String name;
-
-  @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
-  private Set<UserEntity> users = new HashSet<>();
 }
