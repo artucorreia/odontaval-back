@@ -1,15 +1,20 @@
 package br.edu.cesmac.odontaval.models;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@EntityListeners(AuditingEntityListener.class)
 @MappedSuperclass
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,6 +22,7 @@ import java.util.UUID;
 @Setter
 @SuperBuilder
 public class BaseEntity {
+  @CreatedBy
   @Column(name = "created_by", updatable = false)
   private UUID createdBy;
 
@@ -24,6 +30,7 @@ public class BaseEntity {
   @Column(name = "created_at", updatable = false, nullable = false)
   private LocalDateTime createdAt;
 
+  @LastModifiedBy
   @Column(name = "updated_by", insertable = false)
   private UUID updatedBy;
 
