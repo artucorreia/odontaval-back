@@ -30,10 +30,6 @@ public class UserEntity extends BaseEntity {
   @Column(nullable = false)
   private String password;
 
-  @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "specialism_id", referencedColumnName = "id")
-  private SpecialismEntity specialism;
-
   @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(
       name = "users_roles",
