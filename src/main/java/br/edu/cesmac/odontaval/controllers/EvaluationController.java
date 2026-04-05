@@ -1,11 +1,14 @@
 package br.edu.cesmac.odontaval.controllers;
 
+import br.edu.cesmac.odontaval.constant.EvaluationConstant;
 import br.edu.cesmac.odontaval.controllers.mappers.EvaluationMapper;
 import br.edu.cesmac.odontaval.dtos.ResponseDTO;
-import br.edu.cesmac.odontaval.dtos.requests.EvaluationRequestDTO;
+import br.edu.cesmac.odontaval.dtos.requests.EvaluationInsertRequestDTO;
+import br.edu.cesmac.odontaval.dtos.requests.EvaluationUpdateRequestDTO;
 import br.edu.cesmac.odontaval.dtos.responses.EvaluationResponseDTO;
 import br.edu.cesmac.odontaval.models.EvaluationEntity;
 import br.edu.cesmac.odontaval.services.EvaluationService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,92 +22,99 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EvaluationController {
 
-    private final EvaluationService evaluationService;
-    private final EvaluationMapper evaluationMapper;
+  private final EvaluationService evaluationService;
+  private final EvaluationMapper evaluationMapper;
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ResponseDTO<EvaluationResponseDTO>> insert(@RequestBody EvaluationRequestDTO evaluationRequestDTO) {
+  @PostMapping(
+      consumes = MediaType.APPLICATION_JSON_VALUE,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<ResponseDTO<Object>> insert(
+      @Valid @RequestBody EvaluationInsertRequestDTO evaluationInsertRequestDTO) {
 
-        EvaluationEntity entityToSave = evaluationMapper.evaluationRequestDTOToEntity(evaluationRequestDTO);
-        EvaluationEntity savedEntity = evaluationService.insert(entityToSave);
+    EvaluationEntity evaluationEntity =
+        evaluationMapper.evaluationInsertRequestDTOToEntity(evaluationInsertRequestDTO);
+    evaluationService.insert(evaluationEntity);
 
-        EvaluationResponseDTO data = new EvaluationResponseDTO(
-                savedEntity.getId(), savedEntity.getPunctuality(), savedEntity.getInstrumental(),
-                savedEntity.getOrganizationOfServiceUnit(), savedEntity.getBiosecurity(),
-                savedEntity.getEthics(), savedEntity.getConcept(), savedEntity.getObservations(),
-                savedEntity.getStudent().getId(), savedEntity.getExam().getId()
-        );
+    ResponseDTO<Object> response =
+        new ResponseDTO<>(
+            true, EvaluationConstant.INSERT_MESSAGE, EvaluationConstant.INSERT_STATUS, null);
 
-        ResponseDTO<EvaluationResponseDTO> response = new ResponseDTO<>(
-                true, "Avaliação criada com sucesso", HttpStatus.CREATED.value(), data
-        );
+    return ResponseEntity.status(HttpStatus.CREATED).body(response);
+  }
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
+  @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<ResponseDTO<List<EvaluationResponseDTO>>> findAll() {
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ResponseDTO<List<EvaluationResponseDTO>>> findAll() {
+    List<EvaluationEntity> evaluations = evaluationService.findAll();
 
-        List<EvaluationEntity> evaluations = evaluationService.findAll();
+    List<EvaluationResponseDTO> evaluationResponseDTOS =
+        evaluations.stream()
+            .map(
+                eval ->
+                    new EvaluationResponseDTO(
+                        eval.getId(),
+                        eval.getPunctuality(),
+                        eval.getInstrumental(),
+                        eval.getOrganizationOfServiceUnit(),
+                        eval.getBiosecurity(),
+                        eval.getEthics(),
+                        eval.getConcept(),
+                        eval.getObservations(),
+                        eval.getStudent().getId(),
+                        eval.getExam().getId()))
+            .toList();
 
-        List<EvaluationResponseDTO> evaluationResponseDTOS = evaluations.stream()
-                .map(eval -> new EvaluationResponseDTO(
-                        eval.getId(), eval.getPunctuality(), eval.getInstrumental(),
-                        eval.getOrganizationOfServiceUnit(), eval.getBiosecurity(),
-                        eval.getEthics(), eval.getConcept(), eval.getObservations(),
-                        eval.getStudent().getId(), eval.getExam().getId()
-                )).toList();
+    ResponseDTO<List<EvaluationResponseDTO>> response =
+        new ResponseDTO<>(true, null, EvaluationConstant.STATUS_200, evaluationResponseDTOS);
 
-        ResponseDTO<List<EvaluationResponseDTO>> response = new ResponseDTO<>(
-                true, null, HttpStatus.OK.value(), evaluationResponseDTOS
-        );
+    return ResponseEntity.ok(response);
+  }
 
-        return ResponseEntity.ok(response);
-    }
+  @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<ResponseDTO<EvaluationResponseDTO>> findById(@PathVariable Long id) {
 
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ResponseDTO<EvaluationResponseDTO>> findById(@PathVariable Long id) {
+    EvaluationEntity evaluationEntity = evaluationService.findById(id);
 
-        EvaluationEntity eval = evaluationService.findById(id);
+    EvaluationResponseDTO evaluationResponseDTO =
+        new EvaluationResponseDTO(
+            evaluationEntity.getId(),
+            evaluationEntity.getPunctuality(),
+            evaluationEntity.getInstrumental(),
+            evaluationEntity.getOrganizationOfServiceUnit(),
+            evaluationEntity.getBiosecurity(),
+            evaluationEntity.getEthics(),
+            evaluationEntity.getConcept(),
+            evaluationEntity.getObservations(),
+            evaluationEntity.getStudent().getId(),
+            evaluationEntity.getExam().getId());
 
-        EvaluationResponseDTO evaluationResponseDTO = new EvaluationResponseDTO(
-                eval.getId(), eval.getPunctuality(), eval.getInstrumental(),
-                eval.getOrganizationOfServiceUnit(), eval.getBiosecurity(),
-                eval.getEthics(), eval.getConcept(), eval.getObservations(),
-                eval.getStudent().getId(), eval.getExam().getId()
-        );
+    ResponseDTO<EvaluationResponseDTO> response =
+        new ResponseDTO<>(true, null, EvaluationConstant.STATUS_200, evaluationResponseDTO);
 
-        ResponseDTO<EvaluationResponseDTO> response = new ResponseDTO<>(
-                true, null, HttpStatus.OK.value(), evaluationResponseDTO
-        );
+    return ResponseEntity.ok(response);
+  }
 
-        return ResponseEntity.ok(response);
-    }
+  @PutMapping(
+      value = "/{id}",
+      consumes = MediaType.APPLICATION_JSON_VALUE,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<ResponseDTO<Object>> update(
+      @PathVariable Long id, @Valid @RequestBody EvaluationUpdateRequestDTO evaluationUpdateRequestDTO) {
 
-    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ResponseDTO<EvaluationResponseDTO>> update(
-            @PathVariable Long id, @RequestBody EvaluationRequestDTO evaluationRequestDTO) {
+    EvaluationEntity entityToUpdate =
+        evaluationMapper.evaluationUpdateRequestDTOToEntity(evaluationUpdateRequestDTO);
+    evaluationService.update(id, entityToUpdate);
 
-        EvaluationEntity entityToUpdate = evaluationMapper.evaluationRequestDTOToEntity(evaluationRequestDTO);
-        EvaluationEntity updatedEntity = evaluationService.update(id, entityToUpdate);
+    ResponseDTO<Object> response =
+        new ResponseDTO<>(
+            true, EvaluationConstant.UPDATE_MESSAGE, EvaluationConstant.UPDATE_STATUS, null);
 
-        EvaluationResponseDTO data = new EvaluationResponseDTO(
-                updatedEntity.getId(), updatedEntity.getPunctuality(), updatedEntity.getInstrumental(),
-                updatedEntity.getOrganizationOfServiceUnit(), updatedEntity.getBiosecurity(),
-                updatedEntity.getEthics(), updatedEntity.getConcept(), updatedEntity.getObservations(),
-                updatedEntity.getStudent().getId(), updatedEntity.getExam().getId()
-        );
+    return ResponseEntity.ok(response);
+  }
 
-        ResponseDTO<EvaluationResponseDTO> response = new ResponseDTO<>(
-                true, "Avaliação atualizada com sucesso", HttpStatus.OK.value(), data
-        );
-
-        return ResponseEntity.ok(response);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        evaluationService.delete(id);
-        return ResponseEntity.noContent().build();
-    }
+  @DeleteMapping("/{id}")
+  public ResponseEntity<Void> delete(@PathVariable Long id) {
+    evaluationService.delete(id);
+    return ResponseEntity.noContent().build();
+  }
 }
