@@ -1,5 +1,4 @@
 services:
-  # postgres
   postgres:
     image: postgres:17-alpine
     container_name: odontaval-postgres
@@ -12,6 +11,20 @@ services:
       - app
     volumes:
       - odontaval_data:/var/lib/postgresql/data
+
+  back:
+    build: ./../
+    container_name: odontaval-back
+    env_file:
+      - ./../.env
+    ports:
+      - "8081:8081"
+    restart: on-failure:2
+    depends_on:
+      - postgres
+    networks:
+      - app
+    command: [ "--seed" ]
 
 volumes:
   odontaval_data:
