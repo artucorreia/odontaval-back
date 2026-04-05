@@ -1,5 +1,6 @@
 package br.edu.cesmac.odontaval.controllers;
 
+import br.edu.cesmac.odontaval.constant.AuthConstant;
 import br.edu.cesmac.odontaval.controllers.mappers.UserMapper;
 import br.edu.cesmac.odontaval.dtos.ResponseDTO;
 import br.edu.cesmac.odontaval.dtos.auth.AuthenticationDTO;
@@ -57,10 +58,9 @@ public class AuthController {
       throw new OdontAvalException("Erro durante a geração do token", HttpStatus.BAD_REQUEST);
     }
 
-    TokenResponseDTO tokenResponseDTO =
-        new TokenResponseDTO(user.getId(), token);
+    TokenResponseDTO tokenResponseDTO = new TokenResponseDTO(user.getId(), token);
     ResponseDTO<TokenResponseDTO> response =
-        new ResponseDTO<>(true, null, HttpStatus.OK.value(), tokenResponseDTO);
+        new ResponseDTO<>(true, null, AuthConstant.STATUS_200, tokenResponseDTO);
     return ResponseEntity.ok(response);
   }
 
@@ -73,7 +73,7 @@ public class AuthController {
     UserEntity user = userMapper.registerDTOToEntity(registerDTO);
     userService.insert(user);
     ResponseDTO<Object> response =
-        new ResponseDTO<>(true, "Usuário criado com sucesso", HttpStatus.CREATED.value(), null);
+        new ResponseDTO<>(true, AuthConstant.REGISTER_MESSAGE, AuthConstant.REGISTER_STATUS, null);
     return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 }
