@@ -40,7 +40,7 @@ public class AuthController {
   private ResponseEntity<ResponseDTO<TokenResponseDTO>> login(
       @RequestBody @Valid AuthenticationDTO authenticationDTO) {
     UserEntity user = userService.findByEmail(authenticationDTO.getEmail().trim());
-    if (user.getDeleted()) throw new OdontAvalException("Inactive user", HttpStatus.FORBIDDEN);
+    if (user.getDeleted()) throw new OdontAvalException("O usuário está inativo", HttpStatus.FORBIDDEN);
 
     UsernamePasswordAuthenticationToken usernamePassword =
         new UsernamePasswordAuthenticationToken(
