@@ -1,11 +1,14 @@
 package br.edu.cesmac.odontaval.controllers;
 
+import br.edu.cesmac.odontaval.constant.SpecialismConstant;
 import br.edu.cesmac.odontaval.controllers.mappers.SpecialismMapper;
 import br.edu.cesmac.odontaval.dtos.ResponseDTO;
-import br.edu.cesmac.odontaval.dtos.requests.SpecialismRequestDTO;
+import br.edu.cesmac.odontaval.dtos.requests.SpecialismInsertRequestDTO;
+import br.edu.cesmac.odontaval.dtos.requests.SpecialismUpdateRequestDTO;
 import br.edu.cesmac.odontaval.dtos.responses.SpecialismResponseDTO;
 import br.edu.cesmac.odontaval.models.SpecialismEntity;
 import br.edu.cesmac.odontaval.services.SpecialismService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,14 +29,14 @@ public class SpecialismController {
       consumes = MediaType.APPLICATION_JSON_VALUE,
       produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<ResponseDTO<Object>> insert(
-      @RequestBody SpecialismRequestDTO specialismRequestDTO) {
+      @Valid @RequestBody SpecialismInsertRequestDTO specialismInsertRequestDTO) {
     SpecialismEntity specialismEntity =
-        specialismMapper.specialismRequestDTOToEntity(specialismRequestDTO);
+        specialismMapper.specialismInsertRequestDTOToEntity(specialismInsertRequestDTO);
     specialismService.insert(specialismEntity);
 
     ResponseDTO<Object> response =
         new ResponseDTO<>(
-            true, "Especialidade criada com sucesso", HttpStatus.CREATED.value(), null);
+            true, SpecialismConstant.INSERT_MESSAGE, SpecialismConstant.INSERT_STATUS, null);
 
     return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
@@ -50,7 +53,7 @@ public class SpecialismController {
             .toList();
 
     ResponseDTO<List<SpecialismResponseDTO>> response =
-        new ResponseDTO<>(true, null, HttpStatus.CREATED.value(), specialismResponseDTOS);
+        new ResponseDTO<>(true, null, SpecialismConstant.STATUS_200, specialismResponseDTOS);
     return ResponseEntity.ok(response);
   }
 
@@ -62,7 +65,7 @@ public class SpecialismController {
         new SpecialismResponseDTO(entity.getId(), entity.getName(), entity.getDescription());
 
     ResponseDTO<SpecialismResponseDTO> response =
-        new ResponseDTO<>(true, null, HttpStatus.CREATED.value(), specialismResponseDTO);
+        new ResponseDTO<>(true, null, SpecialismConstant.STATUS_200, specialismResponseDTO);
 
     return ResponseEntity.ok(response);
   }
@@ -72,14 +75,14 @@ public class SpecialismController {
       consumes = MediaType.APPLICATION_JSON_VALUE,
       produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<ResponseDTO<SpecialismResponseDTO>> update(
-      @PathVariable Long id, @RequestBody SpecialismRequestDTO specialismRequestDTO) {
+      @PathVariable Long id, @Valid @RequestBody SpecialismUpdateRequestDTO specialismUpdateRequestDTO) {
     SpecialismEntity specialismEntity =
-        specialismMapper.specialismRequestDTOToEntity(specialismRequestDTO);
+        specialismMapper.specialismUpdateRequestDTOToEntity(specialismUpdateRequestDTO);
     specialismService.update(id, specialismEntity);
 
     ResponseDTO<SpecialismResponseDTO> response =
         new ResponseDTO<>(
-            true, "Especialidade atualizada com sucesso", HttpStatus.CREATED.value(), null);
+            true, SpecialismConstant.UPDATE_MESSAGE, SpecialismConstant.UPDATE_STATUS, null);
 
     return ResponseEntity.ok(response);
   }
