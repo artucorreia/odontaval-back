@@ -14,6 +14,7 @@ import java.time.LocalDate;
 @Setter
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
+// todo: check properties nullable
 public class ExamEntity extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
