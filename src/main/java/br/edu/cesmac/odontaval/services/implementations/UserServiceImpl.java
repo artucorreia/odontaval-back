@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import br.edu.cesmac.odontaval.exceptions.OdontAvalException;
 import br.edu.cesmac.odontaval.models.RoleEntity;
@@ -28,7 +29,6 @@ public class UserServiceImpl implements UserService {
   private final RoleService roleService;
   private final PasswordEncoder encoder = new BCryptPasswordEncoder();
 
-
   @Override
   public UserEntity findById(UUID id) {
     log.info("Finding user by id: {}", id);
@@ -51,12 +51,12 @@ public class UserServiceImpl implements UserService {
                     "Nenhum usuário encontrado para esse e-mail", HttpStatus.NOT_FOUND));
   }
 
-
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void insert(UserEntity newUser) {
     log.info("Inserting a new user");
-    Optional<UserEntity> optionalUserEntity = userRepository.findByEmailIgnoreCase(newUser.getEmail().trim());
+    Optional<UserEntity> optionalUserEntity =
+        userRepository.findByEmailIgnoreCase(newUser.getEmail().trim());
     if (optionalUserEntity.isPresent())
       throw new OdontAvalException("O e-mail informado já está em uso", HttpStatus.BAD_REQUEST);
 
@@ -69,5 +69,13 @@ public class UserServiceImpl implements UserService {
     newUser.setPassword(password);
     newUser.setRoles(roles);
     userRepository.save(newUser);
+  }
+
+  @Override
+  public String extractRoleName(Set<RoleEntity> roleEntities) {
+    List<String> priority = List.of("ADMIN", "PROFESSOR", "STUDENT");
+    Set<String> userRoleNames =
+        roleEntities.stream().map(RoleEntity::getName).collect(Collectors.toSet());
+    return priority.stream().filter(userRoleNames::contains).findFirst().orElse("");
   }
 }

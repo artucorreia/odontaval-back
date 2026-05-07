@@ -41,7 +41,8 @@ public class AuthController {
   private ResponseEntity<ResponseDTO<TokenResponseDTO>> login(
       @RequestBody @Valid AuthenticationDTO authenticationDTO) {
     UserEntity user = userService.findByEmail(authenticationDTO.getEmail().trim());
-    if (user.getDeleted()) throw new OdontAvalException("O usuário está inativo", HttpStatus.FORBIDDEN);
+    if (user.getDeleted())
+      throw new OdontAvalException("O usuário está inativo", HttpStatus.FORBIDDEN);
 
     UsernamePasswordAuthenticationToken usernamePassword =
         new UsernamePasswordAuthenticationToken(
@@ -58,7 +59,8 @@ public class AuthController {
       throw new OdontAvalException("Erro durante a geração do token", HttpStatus.BAD_REQUEST);
     }
 
-    TokenResponseDTO tokenResponseDTO = new TokenResponseDTO(user.getId(), token);
+    String userRole = userService.extractRoleName(user.getRoles());
+    TokenResponseDTO tokenResponseDTO = new TokenResponseDTO(user.getId(), userRole, token);
     ResponseDTO<TokenResponseDTO> response =
         new ResponseDTO<>(true, null, AuthConstant.STATUS_200, tokenResponseDTO);
     return ResponseEntity.ok(response);
