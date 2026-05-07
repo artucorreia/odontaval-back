@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS specialisms
 (
     id          SERIAL PRIMARY KEY,
-    name        VARCHAR(150) NOT NULL UNIQUE,
+    name        VARCHAR(50) NOT NULL UNIQUE,
     description TEXT,
 
     created_at  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,

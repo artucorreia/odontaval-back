@@ -30,6 +30,7 @@ public class SpecialismController {
       produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<ResponseDTO<Object>> insert(
       @Valid @RequestBody SpecialismInsertRequestDTO specialismInsertRequestDTO) {
+
     SpecialismEntity specialismEntity =
         specialismMapper.specialismInsertRequestDTOToEntity(specialismInsertRequestDTO);
     specialismService.insert(specialismEntity);
@@ -43,29 +44,27 @@ public class SpecialismController {
 
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<ResponseDTO<List<SpecialismResponseDTO>>> findAll() {
+
     List<SpecialismEntity> specialisms = specialismService.findAll();
-    List<SpecialismResponseDTO> specialismResponseDTOS =
-        specialisms.stream()
-            .map(
-                specialism ->
-                    new SpecialismResponseDTO(
-                        specialism.getId(), specialism.getName(), specialism.getDescription()))
-            .toList();
+
+    List<SpecialismResponseDTO> data =
+        specialismMapper.specialismEntitiesToResponseDTOs(specialisms);
 
     ResponseDTO<List<SpecialismResponseDTO>> response =
-        new ResponseDTO<>(true, null, SpecialismConstant.STATUS_200, specialismResponseDTOS);
+        new ResponseDTO<>(true, null, SpecialismConstant.STATUS_200, data);
+
     return ResponseEntity.ok(response);
   }
 
   @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<ResponseDTO<SpecialismResponseDTO>> findById(@PathVariable Long id) {
+
     SpecialismEntity entity = specialismService.findById(id);
 
-    SpecialismResponseDTO specialismResponseDTO =
-        new SpecialismResponseDTO(entity.getId(), entity.getName(), entity.getDescription());
+    SpecialismResponseDTO dto = specialismMapper.specialismEntityToResponseDTO(entity);
 
     ResponseDTO<SpecialismResponseDTO> response =
-        new ResponseDTO<>(true, null, SpecialismConstant.STATUS_200, specialismResponseDTO);
+        new ResponseDTO<>(true, null, SpecialismConstant.STATUS_200, dto);
 
     return ResponseEntity.ok(response);
   }
@@ -74,13 +73,15 @@ public class SpecialismController {
       value = "/{id}",
       consumes = MediaType.APPLICATION_JSON_VALUE,
       produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<ResponseDTO<SpecialismResponseDTO>> update(
-      @PathVariable Long id, @Valid @RequestBody SpecialismUpdateRequestDTO specialismUpdateRequestDTO) {
+  public ResponseEntity<ResponseDTO<Object>> update(
+      @PathVariable Long id,
+      @Valid @RequestBody SpecialismUpdateRequestDTO specialismUpdateRequestDTO) {
+
     SpecialismEntity specialismEntity =
         specialismMapper.specialismUpdateRequestDTOToEntity(specialismUpdateRequestDTO);
     specialismService.update(id, specialismEntity);
 
-    ResponseDTO<SpecialismResponseDTO> response =
+    ResponseDTO<Object> response =
         new ResponseDTO<>(
             true, SpecialismConstant.UPDATE_MESSAGE, SpecialismConstant.UPDATE_STATUS, null);
 

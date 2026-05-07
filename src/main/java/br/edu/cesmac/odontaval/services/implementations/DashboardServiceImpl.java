@@ -1,10 +1,10 @@
 package br.edu.cesmac.odontaval.services.implementations;
 
+import br.edu.cesmac.odontaval.controllers.mappers.EvaluationMapper;
 import br.edu.cesmac.odontaval.dtos.responses.DashboardStatsResponseDTO;
-import br.edu.cesmac.odontaval.dtos.responses.RecentExamResponseDTO;
-import br.edu.cesmac.odontaval.models.ExamEntity;
+import br.edu.cesmac.odontaval.dtos.responses.RecentEvaluationResponseDTO;
+import br.edu.cesmac.odontaval.models.EvaluationEntity;
 import br.edu.cesmac.odontaval.repositories.EvaluationRepository;
-import br.edu.cesmac.odontaval.repositories.ExamRepository;
 import br.edu.cesmac.odontaval.repositories.UserRepository;
 import br.edu.cesmac.odontaval.services.DashboardService;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ public class DashboardServiceImpl implements DashboardService {
 
   private final UserRepository userRepository;
   private final EvaluationRepository evaluationRepository;
-  private final ExamRepository examRepository;
+  private final EvaluationMapper evaluationMapper;
 
   @Override
   public DashboardStatsResponseDTO getStats() {
@@ -29,21 +29,14 @@ public class DashboardServiceImpl implements DashboardService {
 
     long totalStudents = userRepository.countByRolesNameIgnoreCase("STUDENT");
     long totalEvaluations = evaluationRepository.countByDeletedFalse();
-    long todayExams = examRepository.countByDateAndDeletedFalse(LocalDate.now());
+    long todayEvaluations = evaluationRepository.countByDateAndDeletedFalse(LocalDate.now());
 
-    List<ExamEntity> recent = examRepository.findTop5ByDeletedFalseOrderByCreatedAtDesc();
-    List<RecentExamResponseDTO> recentExams =
+    List<EvaluationEntity> recent = evaluationRepository.findTop5ByDeletedFalseOrderByCreatedAtDesc();
+    List<RecentEvaluationResponseDTO> recentEvaluations =
         recent.stream()
-            .map(
-                e ->
-                    new RecentExamResponseDTO(
-                        e.getId(),
-                        e.getTitle(),
-                        e.getSpecialism().getName(),
-                        e.getAcademicSemester(),
-                        e.getDate()))
+            .map(evaluationMapper::evaluationEntityToRecentResponseDTO)
             .toList();
 
-    return new DashboardStatsResponseDTO(totalStudents, totalEvaluations, todayExams, recentExams);
+    return new DashboardStatsResponseDTO(totalStudents, totalEvaluations, todayEvaluations, recentEvaluations);
   }
 }

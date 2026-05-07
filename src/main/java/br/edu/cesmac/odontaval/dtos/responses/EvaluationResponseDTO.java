@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -13,13 +14,22 @@ import java.util.UUID;
 @Setter
 public class EvaluationResponseDTO {
   private Long id;
+  private String title;
   private Double punctuality;
   private Double instrumental;
-  private Double organizationOfServiceUnit;
+  private Double boxOrganization;
   private Double biosecurity;
   private Double ethics;
   private Double concept;
+  private Double grade;
   private String observations;
+  private String evaluationNumber;
+  private LocalDate date;
+  private String academicSemester;
+  private String goals;
+  private String box;
+  private String procedurePerformed;
+  private UUID professorId;
   private UUID studentId;
-  private Long examId;
+  private Long specialismId;
 }

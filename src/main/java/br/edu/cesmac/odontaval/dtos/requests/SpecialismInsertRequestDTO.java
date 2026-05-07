@@ -14,7 +14,7 @@ import lombok.Setter;
 public class SpecialismInsertRequestDTO {
 
   @NotBlank(message = "O nome é obrigatório")
-  @Size(min = 3, max = 150, message = "O nome deve ter entre 3 e 150 caracteres")
+  @Size(min = 3, max = 50, message = "O nome deve ter entre 3 e 50 caracteres")
   private String name;
 
   @Size(min = 10, max = 500, message = "A descrição deve ter entre 10 e 500 caracteres")

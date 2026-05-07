@@ -47,25 +47,11 @@ public class EvaluationController {
 
     List<EvaluationEntity> evaluations = evaluationService.findAll();
 
-    List<EvaluationResponseDTO> evaluationResponseDTOS =
-        evaluations.stream()
-            .map(
-                eval ->
-                    new EvaluationResponseDTO(
-                        eval.getId(),
-                        eval.getPunctuality(),
-                        eval.getInstrumental(),
-                        eval.getOrganizationOfServiceUnit(),
-                        eval.getBiosecurity(),
-                        eval.getEthics(),
-                        eval.getConcept(),
-                        eval.getObservations(),
-                        eval.getStudent().getId(),
-                        eval.getExam().getId()))
-            .toList();
+    List<EvaluationResponseDTO> data =
+        evaluationMapper.evaluationEntitiesToResponseDTOs(evaluations);
 
     ResponseDTO<List<EvaluationResponseDTO>> response =
-        new ResponseDTO<>(true, null, EvaluationConstant.STATUS_200, evaluationResponseDTOS);
+        new ResponseDTO<>(true, null, EvaluationConstant.STATUS_200, data);
 
     return ResponseEntity.ok(response);
   }
@@ -75,21 +61,10 @@ public class EvaluationController {
 
     EvaluationEntity evaluationEntity = evaluationService.findById(id);
 
-    EvaluationResponseDTO evaluationResponseDTO =
-        new EvaluationResponseDTO(
-            evaluationEntity.getId(),
-            evaluationEntity.getPunctuality(),
-            evaluationEntity.getInstrumental(),
-            evaluationEntity.getOrganizationOfServiceUnit(),
-            evaluationEntity.getBiosecurity(),
-            evaluationEntity.getEthics(),
-            evaluationEntity.getConcept(),
-            evaluationEntity.getObservations(),
-            evaluationEntity.getStudent().getId(),
-            evaluationEntity.getExam().getId());
+    EvaluationResponseDTO dto = evaluationMapper.evaluationEntityToResponseDTO(evaluationEntity);
 
     ResponseDTO<EvaluationResponseDTO> response =
-        new ResponseDTO<>(true, null, EvaluationConstant.STATUS_200, evaluationResponseDTO);
+        new ResponseDTO<>(true, null, EvaluationConstant.STATUS_200, dto);
 
     return ResponseEntity.ok(response);
   }
@@ -99,7 +74,8 @@ public class EvaluationController {
       consumes = MediaType.APPLICATION_JSON_VALUE,
       produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<ResponseDTO<Object>> update(
-      @PathVariable Long id, @Valid @RequestBody EvaluationUpdateRequestDTO evaluationUpdateRequestDTO) {
+      @PathVariable Long id,
+      @Valid @RequestBody EvaluationUpdateRequestDTO evaluationUpdateRequestDTO) {
 
     EvaluationEntity entityToUpdate =
         evaluationMapper.evaluationUpdateRequestDTOToEntity(evaluationUpdateRequestDTO);

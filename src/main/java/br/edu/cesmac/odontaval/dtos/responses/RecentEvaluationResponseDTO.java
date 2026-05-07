@@ -1,25 +1,20 @@
 package br.edu.cesmac.odontaval.dtos.responses;
 
-import java.time.LocalDate;
-import java.util.UUID;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class ExamResponseDTO {
+public class RecentEvaluationResponseDTO {
   private Long id;
   private String title;
-  private LocalDate date;
+  private String specialismName;
   private String academicSemester;
-  private String goals;
-  private String serviceUnit;
-  private String procedurePerformed;
-  private UUID professorId;
-  private Long specialismId;
+  private LocalDate date;
 }

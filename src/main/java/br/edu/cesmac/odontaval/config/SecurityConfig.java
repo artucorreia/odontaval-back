@@ -65,18 +65,6 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.DELETE, "/api/v1/specialisms/{id}")
                     .hasRole("ADMIN")
 
-                    // exam
-                    .requestMatchers(HttpMethod.POST, "/api/v1/exams")
-                    .hasRole("PROFESSOR")
-                    .requestMatchers(HttpMethod.GET, "/api/v1/exams")
-                    .hasAnyRole("ADMIN", "PROFESSOR", "STUDENT")
-                    .requestMatchers(HttpMethod.GET, "/api/v1/exams/{id}")
-                    .hasAnyRole("ADMIN", "PROFESSOR", "STUDENT")
-                    .requestMatchers(HttpMethod.PUT, "/api/v1/exams/{id}")
-                    .hasRole("PROFESSOR")
-                    .requestMatchers(HttpMethod.DELETE, "/api/v1/exams/{id}")
-                    .hasAnyRole("ADMIN", "PROFESSOR")
-
                     // evaluation
                     .requestMatchers(HttpMethod.POST, "/api/v1/evaluations")
                     .hasRole("PROFESSOR")
