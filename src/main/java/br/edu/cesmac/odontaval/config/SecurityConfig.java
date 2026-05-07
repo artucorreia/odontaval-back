@@ -45,6 +45,14 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.POST, "/api/auth/register")
                     .permitAll()
 
+                    // users
+                    .requestMatchers(HttpMethod.GET, "/api/v1/users")
+                    .hasAnyRole("ADMIN", "PROFESSOR")
+
+                    // dashboard
+                    .requestMatchers(HttpMethod.GET, "/api/v1/dashboard/stats")
+                    .hasAnyRole("ADMIN", "PROFESSOR")
+
                     // specialism
                     .requestMatchers(HttpMethod.POST, "/api/v1/specialisms")
                     .hasRole("ADMIN")
@@ -104,6 +112,14 @@ public class SecurityConfig {
                     .permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/auth/register")
                     .permitAll()
+
+                    // users
+                    .requestMatchers(HttpMethod.GET, "/api/v1/users")
+                    .hasAnyRole("ADMIN", "PROFESSOR")
+
+                    // dashboard
+                    .requestMatchers(HttpMethod.GET, "/api/v1/dashboard/stats")
+                    .hasAnyRole("ADMIN", "PROFESSOR")
 
                     // all
                     .anyRequest()

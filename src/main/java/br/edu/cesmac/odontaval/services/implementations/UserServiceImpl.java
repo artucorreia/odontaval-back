@@ -51,6 +51,12 @@ public class UserServiceImpl implements UserService {
                     "Nenhum usuário encontrado para esse e-mail", HttpStatus.NOT_FOUND));
   }
 
+  @Override
+  public List<UserEntity> findByRole(String roleName) {
+    log.info("Finding users by role: {}", roleName);
+    return userRepository.findByRolesNameIgnoreCase(roleName);
+  }
+
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void insert(UserEntity newUser) {
