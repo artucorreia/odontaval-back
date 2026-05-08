@@ -17,7 +17,6 @@ public interface EvaluationMapper {
   @Mappings({
     @Mapping(target = "id", ignore = true),
     @Mapping(target = "professor", ignore = true),
-    @Mapping(target = "grade", ignore = true),
     @Mapping(source = "studentId", target = "student.id"),
     @Mapping(source = "specialismId", target = "specialism.id")
   })
@@ -28,7 +27,6 @@ public interface EvaluationMapper {
     @Mapping(target = "professor", ignore = true),
     @Mapping(target = "student", ignore = true),
     @Mapping(target = "specialism", ignore = true),
-    @Mapping(target = "grade", ignore = true)
   })
   EvaluationEntity evaluationUpdateRequestDTOToEntity(EvaluationUpdateRequestDTO dto);
 

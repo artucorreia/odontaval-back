@@ -37,7 +37,7 @@ public class UserSeeder implements Seeder {
   }
 
   private Collection<UserEntity> getEntities() {
-    Set<RoleEntity> roles = roleRepository.findByNameInIgnoreCase(List.of("ADMIN", "PROFESSOR"));
+    Set<RoleEntity> roles = roleRepository.findByNameInIgnoreCase(List.of("ADMIN", "PROFESSOR", "STUDENT"));
 
     UserEntity firstUser = new UserEntity();
     firstUser.setName("Arthur Correia");

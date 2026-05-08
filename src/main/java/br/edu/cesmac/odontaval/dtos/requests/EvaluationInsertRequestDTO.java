@@ -48,6 +48,11 @@ public class EvaluationInsertRequestDTO {
   @DecimalMax(value = "0.0", message = "A nota de conceito deve ser no máximo 0")
   private Double concept;
 
+  @NotNull(message = "A nota final é obrigatória")
+  @DecimalMin(value = "0.0", message = "A nota final deve ser no mínimo 0")
+  @DecimalMax(value = "10.0", message = "A nota final deve ser no máximo 10")
+  private Double grade;
+
   @Size(max = 200, message = "A observação deve ter no máximo 200 caracteres")
   private String observations;
 
@@ -57,7 +62,9 @@ public class EvaluationInsertRequestDTO {
   @NotNull(message = "A data é obrigatória")
   private LocalDate date;
 
-  @Pattern(regexp = "^\\d{4}\\.[12]$", message = "O semestre acadêmico deve estar no formato AAAA.1 ou AAAA.2")
+  @Pattern(
+      regexp = "^\\d{4}\\.[12]$",
+      message = "O semestre acadêmico deve estar no formato AAAA.1 ou AAAA.2")
   private String academicSemester;
 
   @Size(max = 200, message = "Os objetivos devem ter no máximo 200 caracteres")

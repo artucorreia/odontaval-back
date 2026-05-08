@@ -61,7 +61,7 @@ public class EvaluationServiceImpl implements EvaluationService {
     entityToSave.setBiosecurity(data.getBiosecurity());
     entityToSave.setEthics(data.getEthics());
     entityToSave.setConcept(data.getConcept());
-    entityToSave.setGrade(calculateGrade(entityToSave));
+    entityToSave.setGrade(data.getGrade());
 
     if (data.getTitle() != null && !data.getTitle().isBlank())
       entityToSave.setTitle(data.getTitle().trim());
@@ -116,18 +116,18 @@ public class EvaluationServiceImpl implements EvaluationService {
     if (data.getBiosecurity() != null) existing.setBiosecurity(data.getBiosecurity());
     if (data.getEthics() != null) existing.setEthics(data.getEthics());
     if (data.getConcept() != null) existing.setConcept(data.getConcept());
-
-    existing.setGrade(calculateGrade(existing));
+    if (data.getGrade() != null) existing.setGrade(data.getGrade());
 
     if (data.getObservations() != null && !data.getObservations().isBlank())
       existing.setObservations(data.getObservations().trim());
-    if (data.getEvaluationNumber() != null) existing.setEvaluationNumber(data.getEvaluationNumber());
+    if (data.getEvaluationNumber() != null)
+      existing.setEvaluationNumber(data.getEvaluationNumber());
     if (data.getDate() != null) existing.setDate(data.getDate());
-    if (data.getAcademicSemester() != null) existing.setAcademicSemester(data.getAcademicSemester());
+    if (data.getAcademicSemester() != null)
+      existing.setAcademicSemester(data.getAcademicSemester());
     if (data.getGoals() != null && !data.getGoals().isBlank())
       existing.setGoals(data.getGoals().trim());
-    if (data.getBox() != null && !data.getBox().isBlank())
-      existing.setBox(data.getBox().trim());
+    if (data.getBox() != null && !data.getBox().isBlank()) existing.setBox(data.getBox().trim());
     if (data.getProcedurePerformed() != null && !data.getProcedurePerformed().isBlank())
       existing.setProcedurePerformed(data.getProcedurePerformed().trim());
 
@@ -146,12 +146,6 @@ public class EvaluationServiceImpl implements EvaluationService {
     evaluationEntity.setDeletedAt(LocalDateTime.now());
 
     evaluationRepository.save(evaluationEntity);
-  }
-
-  private double calculateGrade(EvaluationEntity entity) {
-    double sum = entity.getPunctuality() + entity.getInstrumental() + entity.getBoxOrganization()
-        + entity.getBiosecurity() + entity.getEthics() + entity.getConcept();
-    return Math.max(0.0, Math.min(10.0, 10.0 + sum));
   }
 
   private UserEntity findAuthenticatedUser() {
