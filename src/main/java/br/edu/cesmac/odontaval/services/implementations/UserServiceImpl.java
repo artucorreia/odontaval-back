@@ -55,8 +55,8 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public List<UserEntity> findByRole(String roleName) {
-    log.info("Finding users by role: {}", roleName);
-    return userRepository.findByRolesNameIgnoreCase(roleName);
+    log.info("Finding users by exclusive role: {}", roleName);
+    return userRepository.findByExclusiveRoleIgnoreCase(roleName);
   }
 
   @Transactional(rollbackFor = Exception.class)
