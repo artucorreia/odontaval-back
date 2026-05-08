@@ -31,9 +31,13 @@ public interface EvaluationMapper {
   EvaluationEntity evaluationUpdateRequestDTOToEntity(EvaluationUpdateRequestDTO dto);
 
   @Mappings({
-    @Mapping(source = "professor.id", target = "professorId"),
-    @Mapping(source = "student.id", target = "studentId"),
-    @Mapping(source = "specialism.id", target = "specialismId")
+    @Mapping(source = "professor.id",    target = "professorId"),
+    @Mapping(source = "professor.name",  target = "professorName"),
+    @Mapping(source = "student.id",      target = "studentId"),
+    @Mapping(source = "student.name",    target = "studentName"),
+    @Mapping(source = "student.email",   target = "studentEmail"),
+    @Mapping(source = "specialism.id",   target = "specialismId"),
+    @Mapping(source = "specialism.name", target = "specialismName")
   })
   EvaluationResponseDTO evaluationEntityToResponseDTO(EvaluationEntity entity);
 

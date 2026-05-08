@@ -86,12 +86,14 @@ public class EvaluationServiceImpl implements EvaluationService {
   }
 
   @Override
+  @Transactional(rollbackOn = Exception.class)
   public List<EvaluationEntity> findAll() {
     log.info("Finding all evaluations");
-    return evaluationRepository.findAll();
+    return evaluationRepository.findByDeletedFalseOrderByCreatedAtDesc();
   }
 
   @Override
+  @Transactional(rollbackOn = Exception.class)
   public EvaluationEntity findById(Long id) {
     log.info("Finding evaluation by id: {}", id);
     return evaluationRepository

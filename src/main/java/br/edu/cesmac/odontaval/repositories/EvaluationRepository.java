@@ -14,4 +14,6 @@ public interface EvaluationRepository extends JpaRepository<EvaluationEntity, Lo
   long countByDateAndDeletedFalse(LocalDate date);
 
   List<EvaluationEntity> findTop5ByDeletedFalseOrderByCreatedAtDesc();
+
+  List<EvaluationEntity> findByDeletedFalseOrderByCreatedAtDesc();
 }

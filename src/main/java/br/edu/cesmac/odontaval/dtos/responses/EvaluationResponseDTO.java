@@ -30,6 +30,10 @@ public class EvaluationResponseDTO {
   private String box;
   private String procedurePerformed;
   private UUID professorId;
+  private String professorName;
   private UUID studentId;
+  private String studentName;
+  private String studentEmail;
   private Long specialismId;
+  private String specialismName;
 }
