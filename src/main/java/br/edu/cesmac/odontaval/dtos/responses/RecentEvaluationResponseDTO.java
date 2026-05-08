@@ -14,6 +14,9 @@ import java.time.LocalDate;
 public class RecentEvaluationResponseDTO {
   private Long id;
   private String title;
+  private String evaluationNumber;
+  private Double grade;
+  private String studentName;
   private String specialismName;
   private String academicSemester;
   private LocalDate date;

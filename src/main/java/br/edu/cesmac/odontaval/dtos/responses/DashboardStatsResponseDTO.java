@@ -14,6 +14,6 @@ import java.util.List;
 public class DashboardStatsResponseDTO {
   private Long totalStudents;
   private Long totalEvaluations;
-  private Long todayEvaluations;
+  private Long evaluationsThisMonth;
   private List<RecentEvaluationResponseDTO> recentEvaluations;
 }

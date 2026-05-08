@@ -43,6 +43,9 @@ public interface EvaluationMapper {
 
   List<EvaluationResponseDTO> evaluationEntitiesToResponseDTOs(List<EvaluationEntity> entities);
 
-  @Mapping(source = "specialism.name", target = "specialismName")
+  @Mappings({
+    @Mapping(source = "specialism.name", target = "specialismName"),
+    @Mapping(source = "student.name",    target = "studentName"),
+  })
   RecentEvaluationResponseDTO evaluationEntityToRecentResponseDTO(EvaluationEntity entity);
 }
