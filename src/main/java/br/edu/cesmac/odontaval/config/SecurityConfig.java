@@ -50,6 +50,10 @@ public class SecurityConfig {
                     .hasAnyRole("ADMIN", "PROFESSOR")
                     .requestMatchers(HttpMethod.GET, "/api/v1/users/{id}")
                     .hasAnyRole("ADMIN", "PROFESSOR", "STUDENT")
+                    .requestMatchers(HttpMethod.PUT, "/api/v1/users/{id}")
+                    .hasAnyRole("ADMIN", "PROFESSOR", "STUDENT")
+                    .requestMatchers(HttpMethod.PUT, "/api/v1/users/{id}/password")
+                    .hasAnyRole("ADMIN", "PROFESSOR", "STUDENT")
 
                     // dashboard
                     .requestMatchers(HttpMethod.GET, "/api/v1/dashboard/stats")
@@ -111,6 +115,10 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.GET, "/api/v1/users")
                     .hasAnyRole("ADMIN", "PROFESSOR")
                     .requestMatchers(HttpMethod.GET, "/api/v1/users/{id}")
+                    .hasAnyRole("ADMIN", "PROFESSOR", "STUDENT")
+                    .requestMatchers(HttpMethod.PUT, "/api/v1/users/{id}")
+                    .hasAnyRole("ADMIN", "PROFESSOR", "STUDENT")
+                    .requestMatchers(HttpMethod.PUT, "/api/v1/users/{id}/password")
                     .hasAnyRole("ADMIN", "PROFESSOR", "STUDENT")
 
                     // dashboard

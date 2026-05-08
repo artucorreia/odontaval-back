@@ -7,6 +7,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import br.edu.cesmac.odontaval.dtos.requests.PasswordUpdateRequestDTO;
+import br.edu.cesmac.odontaval.dtos.requests.UserUpdateRequestDTO;
 import br.edu.cesmac.odontaval.exceptions.OdontAvalException;
 import br.edu.cesmac.odontaval.models.RoleEntity;
 import br.edu.cesmac.odontaval.models.UserEntity;
@@ -75,6 +77,42 @@ public class UserServiceImpl implements UserService {
     newUser.setPassword(password);
     newUser.setRoles(roles);
     userRepository.save(newUser);
+  }
+
+  @Transactional(rollbackFor = Exception.class)
+  @Override
+  public UserEntity update(UUID id, UserUpdateRequestDTO dto) {
+    log.info("Updating user: {}", id);
+    UserEntity user = findById(id);
+
+    if (dto.getName() != null && !dto.getName().isBlank()) {
+      user.setName(dto.getName().trim());
+    }
+    if (dto.getEmail() != null && !dto.getEmail().isBlank()) {
+      String newEmail = dto.getEmail().trim();
+      if (!newEmail.equalsIgnoreCase(user.getEmail())) {
+        userRepository.findByEmailIgnoreCase(newEmail).ifPresent(existing -> {
+          throw new OdontAvalException("O e-mail informado já está em uso", HttpStatus.BAD_REQUEST);
+        });
+        user.setEmail(newEmail);
+      }
+    }
+
+    return userRepository.save(user);
+  }
+
+  @Transactional(rollbackFor = Exception.class)
+  @Override
+  public void updatePassword(UUID id, PasswordUpdateRequestDTO dto) {
+    log.info("Updating password for user: {}", id);
+    UserEntity user = findById(id);
+
+    if (!encoder.matches(dto.getCurrentPassword(), user.getPassword())) {
+      throw new OdontAvalException("Senha atual incorreta", HttpStatus.BAD_REQUEST);
+    }
+
+    user.setPassword(encoder.encode(dto.getNewPassword()));
+    userRepository.save(user);
   }
 
   @Override
