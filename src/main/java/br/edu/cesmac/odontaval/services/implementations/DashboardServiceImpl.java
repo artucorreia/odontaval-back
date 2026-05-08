@@ -252,6 +252,34 @@ public class DashboardServiceImpl implements DashboardService {
         .collect(Collectors.toList());
   }
 
+  // ── Class averages ────────────────────────────────────────────────────────
+
+  @Override
+  @Transactional
+  public ClassAveragesResponseDTO getClassAverages(UUID excludeStudentId) {
+    log.info("Fetching class averages, excludeStudentId={}", excludeStudentId);
+
+    List<EvaluationEntity> evals = evaluationRepository.findByDeletedFalseOrderByCreatedAtDesc();
+    if (excludeStudentId != null) {
+      evals = evals.stream()
+          .filter(e -> !excludeStudentId.equals(e.getStudent().getId()))
+          .collect(Collectors.toList());
+    }
+
+    if (evals.isEmpty()) {
+      return new ClassAveragesResponseDTO(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+    }
+
+    return new ClassAveragesResponseDTO(
+        round1(evals.stream().mapToDouble(EvaluationEntity::getPunctuality).average().orElse(0.0)),
+        round1(evals.stream().mapToDouble(EvaluationEntity::getInstrumental).average().orElse(0.0)),
+        round1(evals.stream().mapToDouble(EvaluationEntity::getBoxOrganization).average().orElse(0.0)),
+        round1(evals.stream().mapToDouble(EvaluationEntity::getBiosecurity).average().orElse(0.0)),
+        round1(evals.stream().mapToDouble(EvaluationEntity::getEthics).average().orElse(0.0)),
+        round1(evals.stream().mapToDouble(EvaluationEntity::getConcept).average().orElse(0.0))
+    );
+  }
+
   private List<TopStudentDatumDTO> computeTopStudents(List<EvaluationEntity> evals) {
     Map<UUID, List<EvaluationEntity>> byStudent = evals.stream()
         .collect(Collectors.groupingBy(e -> e.getStudent().getId()));
