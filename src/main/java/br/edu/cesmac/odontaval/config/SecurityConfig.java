@@ -48,6 +48,8 @@ public class SecurityConfig {
                     // users
                     .requestMatchers(HttpMethod.GET, "/api/v1/users")
                     .hasAnyRole("ADMIN", "PROFESSOR")
+                    .requestMatchers(HttpMethod.GET, "/api/v1/users/{id}")
+                    .hasAnyRole("ADMIN", "PROFESSOR", "STUDENT")
 
                     // dashboard
                     .requestMatchers(HttpMethod.GET, "/api/v1/dashboard/stats")
@@ -104,6 +106,8 @@ public class SecurityConfig {
                     // users
                     .requestMatchers(HttpMethod.GET, "/api/v1/users")
                     .hasAnyRole("ADMIN", "PROFESSOR")
+                    .requestMatchers(HttpMethod.GET, "/api/v1/users/{id}")
+                    .hasAnyRole("ADMIN", "PROFESSOR", "STUDENT")
 
                     // dashboard
                     .requestMatchers(HttpMethod.GET, "/api/v1/dashboard/stats")

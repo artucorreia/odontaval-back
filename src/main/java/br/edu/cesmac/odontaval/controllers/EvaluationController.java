@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("api/v1/evaluations")
@@ -43,9 +44,12 @@ public class EvaluationController {
   }
 
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<ResponseDTO<List<EvaluationResponseDTO>>> findAll() {
+  public ResponseEntity<ResponseDTO<List<EvaluationResponseDTO>>> findAll(
+      @RequestParam(required = false) UUID studentId) {
 
-    List<EvaluationEntity> evaluations = evaluationService.findAll();
+    List<EvaluationEntity> evaluations = studentId != null
+        ? evaluationService.findByStudentId(studentId)
+        : evaluationService.findAll();
 
     List<EvaluationResponseDTO> data =
         evaluationMapper.evaluationEntitiesToResponseDTOs(evaluations);

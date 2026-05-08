@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 @Repository
 public interface EvaluationRepository extends JpaRepository<EvaluationEntity, Long> {
@@ -16,4 +17,6 @@ public interface EvaluationRepository extends JpaRepository<EvaluationEntity, Lo
   List<EvaluationEntity> findTop5ByDeletedFalseOrderByCreatedAtDesc();
 
   List<EvaluationEntity> findByDeletedFalseOrderByCreatedAtDesc();
+
+  List<EvaluationEntity> findByStudentIdAndDeletedFalseOrderByCreatedAtDesc(UUID studentId);
 }
