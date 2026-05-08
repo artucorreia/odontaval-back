@@ -54,6 +54,8 @@ public class SecurityConfig {
                     // dashboard
                     .requestMatchers(HttpMethod.GET, "/api/v1/dashboard/stats")
                     .hasAnyRole("ADMIN", "PROFESSOR")
+                    .requestMatchers(HttpMethod.GET, "/api/v1/dashboard/semester")
+                    .hasAnyRole("ADMIN", "PROFESSOR")
 
                     // specialism
                     .requestMatchers(HttpMethod.POST, "/api/v1/specialisms")
@@ -111,6 +113,8 @@ public class SecurityConfig {
 
                     // dashboard
                     .requestMatchers(HttpMethod.GET, "/api/v1/dashboard/stats")
+                    .hasAnyRole("ADMIN", "PROFESSOR")
+                    .requestMatchers(HttpMethod.GET, "/api/v1/dashboard/semester")
                     .hasAnyRole("ADMIN", "PROFESSOR")
 
                     // all
