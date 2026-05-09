@@ -33,7 +33,7 @@ public class SpecialismServiceImpl implements SpecialismService {
 
     SpecialismEntity specialismEntity = new SpecialismEntity();
     specialismEntity.setName(data.getName().trim());
-    specialismEntity.setDescription(data.getDescription().trim());
+    if (data.getDescription() != null) specialismEntity.setDescription(data.getDescription().trim());
     specialismEntity.setCreatedAt(LocalDateTime.now());
     specialismEntity.setDeleted(false);
 
@@ -80,6 +80,17 @@ public class SpecialismServiceImpl implements SpecialismService {
     specialismEntity.setDeleted(true);
     specialismEntity.setDeletedAt(LocalDateTime.now());
 
+    this.specialismRepository.save(specialismEntity);
+  }
+
+  @Override
+  @Transactional(rollbackOn = Exception.class)
+  public void reactivate(Long id) {
+    log.info("Reactivating a specialism by id: {}", id);
+    SpecialismEntity specialismEntity = this.findById(id);
+    specialismEntity.setDeleted(false);
+    specialismEntity.setDeletedAt(null);
+    specialismEntity.setDeletedBy(null);
     this.specialismRepository.save(specialismEntity);
   }
 

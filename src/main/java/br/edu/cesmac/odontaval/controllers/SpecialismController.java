@@ -93,4 +93,10 @@ public class SpecialismController {
     specialismService.delete(id);
     return ResponseEntity.noContent().build();
   }
+
+  @PutMapping(value = "/{id}/reactivate", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<ResponseDTO<Object>> reactivate(@PathVariable Long id) {
+    specialismService.reactivate(id);
+    return ResponseEntity.ok(new ResponseDTO<>(true, null, SpecialismConstant.STATUS_200, null));
+  }
 }

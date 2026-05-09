@@ -13,4 +13,6 @@ public interface SpecialismService {
   void update(Long id, SpecialismEntity specialismEntity);
 
   void delete(Long id);
+
+  void reactivate(Long id);
 }

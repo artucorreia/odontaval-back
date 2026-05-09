@@ -18,4 +18,6 @@ public interface UserRepository extends JpaRepository<UserEntity, UUID> {
   List<UserEntity> findByExclusiveRoleIgnoreCase(@Param("roleName") String roleName);
 
   long countByRolesNameIgnoreCase(String roleName);
+
+  List<UserEntity> findAllByOrderByCreatedAtDesc();
 }

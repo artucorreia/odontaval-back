@@ -14,13 +14,25 @@ public interface UserService {
 
   UserEntity findByEmail(String email);
 
+  List<UserEntity> findAll();
+
   List<UserEntity> findByRole(String role);
 
   void insert(UserEntity userEntity);
 
+  void insertWithRole(UserEntity userEntity, String roleName);
+
   UserEntity update(UUID id, UserUpdateRequestDTO dto);
 
   void updatePassword(UUID id, PasswordUpdateRequestDTO dto);
+
+  void adminResetPassword(UUID id, String newPassword);
+
+  void updateRole(UUID id, String roleName);
+
+  void delete(UUID id);
+
+  void reactivate(UUID id);
 
   String extractRoleName(Set<RoleEntity> roleEntities);
 }

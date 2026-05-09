@@ -37,25 +37,74 @@ public class UserSeeder implements Seeder {
   }
 
   private Collection<UserEntity> getEntities() {
-    Set<RoleEntity> roles = roleRepository.findByNameInIgnoreCase(List.of("ADMIN", "PROFESSOR", "STUDENT"));
+    Set<RoleEntity> studentRoles =
+        roleRepository.findByNameInIgnoreCase(List.of("STUDENT"));
 
-    UserEntity firstUser = new UserEntity();
-    firstUser.setName("Arthur Correia");
-    firstUser.setEmail("arthurcorreia.dev@gmail.com");
-    firstUser.setRoles(roles);
-    firstUser.setPassword(encoder.encode("12345678"));
-    firstUser.setCreatedAt(LocalDateTime.now());
-    firstUser.setDeleted(false);
+    Set<RoleEntity> professorRoles =
+        roleRepository.findByNameInIgnoreCase(List.of("PROFESSOR"));
 
-    UserEntity secondUser = new UserEntity();
-    secondUser.setName("Hugo Steverson");
-    secondUser.setEmail("hugosteverson11@gmail.com");
-    secondUser.setRoles(roles);
-    secondUser.setPassword(encoder.encode("12345678"));
-    secondUser.setCreatedAt(LocalDateTime.now());
-    secondUser.setDeleted(false);
+    Set<RoleEntity> adminRoles =
+        roleRepository.findByNameInIgnoreCase(List.of("ADMIN"));
 
+    // ====================== STUDENTS ======================
 
-    return new ArrayList<>(List.of(firstUser, secondUser));
+    UserEntity firstStudent = new UserEntity();
+    firstStudent.setName("Arthur Correia");
+    firstStudent.setEmail("arthurcorreia.dev@gmail.com");
+    firstStudent.setRoles(adminRoles);
+    firstStudent.setPassword(encoder.encode("12345678"));
+    firstStudent.setCreatedAt(LocalDateTime.now());
+    firstStudent.setDeleted(false);
+
+    UserEntity secondStudent = new UserEntity();
+    secondStudent.setName("Hugo Steverson");
+    secondStudent.setEmail("hugosteverson11@gmail.com");
+    secondStudent.setRoles(studentRoles);
+    secondStudent.setPassword(encoder.encode("12345678"));
+    secondStudent.setCreatedAt(LocalDateTime.now());
+    secondStudent.setDeleted(false);
+
+    UserEntity thirdStudent = new UserEntity();
+    thirdStudent.setName("Tirth Patel");
+    thirdStudent.setEmail("tirthpatel@gmail.com");
+    thirdStudent.setRoles(studentRoles);
+    thirdStudent.setPassword(encoder.encode("12345678"));
+    thirdStudent.setCreatedAt(LocalDateTime.now());
+    thirdStudent.setDeleted(false);
+
+    UserEntity fourthStudent = new UserEntity();
+    fourthStudent.setName("John Doe");
+    fourthStudent.setEmail("johndoe@gmail.com");
+    fourthStudent.setRoles(studentRoles);
+    fourthStudent.setPassword(encoder.encode("12345678"));
+    fourthStudent.setCreatedAt(LocalDateTime.now());
+    fourthStudent.setDeleted(false);
+
+    // ====================== PROFESSORS ======================
+
+    UserEntity firstProfessor = new UserEntity();
+    firstProfessor.setName("Dr. Carlos Henrique");
+    firstProfessor.setEmail("carlos.henrique@gmail.com");
+    firstProfessor.setRoles(professorRoles);
+    firstProfessor.setPassword(encoder.encode("12345678"));
+    firstProfessor.setCreatedAt(LocalDateTime.now());
+    firstProfessor.setDeleted(false);
+
+    UserEntity secondProfessor = new UserEntity();
+    secondProfessor.setName("Dra. Fernanda Lima");
+    secondProfessor.setEmail("fernanda.lima@gmail.com");
+    secondProfessor.setRoles(professorRoles);
+    secondProfessor.setPassword(encoder.encode("12345678"));
+    secondProfessor.setCreatedAt(LocalDateTime.now());
+    secondProfessor.setDeleted(false);
+
+    return new ArrayList<>(List.of(
+        firstStudent,
+        secondStudent,
+        thirdStudent,
+        fourthStudent,
+        firstProfessor,
+        secondProfessor
+    ));
   }
 }

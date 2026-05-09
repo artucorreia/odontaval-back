@@ -43,6 +43,15 @@ public class EvaluationController {
     return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 
+  @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<ResponseDTO<List<EvaluationResponseDTO>>> findAllAdmin() {
+    List<EvaluationEntity> evaluations = evaluationService.findAllIncludingDeleted();
+    List<EvaluationResponseDTO> data =
+        evaluationMapper.evaluationEntitiesToResponseDTOs(evaluations);
+    return ResponseEntity.ok(
+        new ResponseDTO<>(true, null, EvaluationConstant.STATUS_200, data));
+  }
+
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<ResponseDTO<List<EvaluationResponseDTO>>> findAll(
       @RequestParam(required = false) UUID studentId) {
@@ -96,5 +105,12 @@ public class EvaluationController {
   public ResponseEntity<Void> delete(@PathVariable Long id) {
     evaluationService.delete(id);
     return ResponseEntity.noContent().build();
+  }
+
+  @PutMapping(value = "/{id}/reactivate", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<ResponseDTO<Object>> reactivate(@PathVariable Long id) {
+    evaluationService.reactivate(id);
+    return ResponseEntity.ok(
+        new ResponseDTO<>(true, null, EvaluationConstant.STATUS_200, null));
   }
 }

@@ -48,6 +48,18 @@ public class SecurityConfig {
                     .permitAll()
 
                     // users
+                    .requestMatchers(HttpMethod.GET, "/api/v1/users/all")
+                    .hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.POST, "/api/v1/users")
+                    .hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.PUT, "/api/v1/users/{id}/role")
+                    .hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.PUT, "/api/v1/users/{id}/admin-reset-password")
+                    .hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.PUT, "/api/v1/users/{id}/reactivate")
+                    .hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.DELETE, "/api/v1/users/{id}")
+                    .hasRole("ADMIN")
                     .requestMatchers(HttpMethod.GET, "/api/v1/users")
                     .hasAnyRole("ADMIN", "PROFESSOR")
                     .requestMatchers(HttpMethod.GET, "/api/v1/users/{id}")
@@ -76,8 +88,12 @@ public class SecurityConfig {
                     .hasRole("ADMIN")
                     .requestMatchers(HttpMethod.DELETE, "/api/v1/specialisms/{id}")
                     .hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.PUT, "/api/v1/specialisms/{id}/reactivate")
+                    .hasRole("ADMIN")
 
                     // evaluation
+                    .requestMatchers(HttpMethod.GET, "/api/v1/evaluations/all")
+                    .hasRole("ADMIN")
                     .requestMatchers(HttpMethod.POST, "/api/v1/evaluations")
                     .hasRole("PROFESSOR")
                     .requestMatchers(HttpMethod.GET, "/api/v1/evaluations")
@@ -88,6 +104,8 @@ public class SecurityConfig {
                     .hasRole("PROFESSOR")
                     .requestMatchers(HttpMethod.DELETE, "/api/v1/evaluations/{id}")
                     .hasAnyRole("ADMIN", "PROFESSOR")
+                    .requestMatchers(HttpMethod.PUT, "/api/v1/evaluations/{id}/reactivate")
+                    .hasRole("ADMIN")
 
                     // all
                     .anyRequest()
@@ -116,6 +134,18 @@ public class SecurityConfig {
                     .permitAll()
 
                     // users
+                    .requestMatchers(HttpMethod.GET, "/api/v1/users/all")
+                    .hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.POST, "/api/v1/users")
+                    .hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.PUT, "/api/v1/users/{id}/role")
+                    .hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.PUT, "/api/v1/users/{id}/admin-reset-password")
+                    .hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.PUT, "/api/v1/users/{id}/reactivate")
+                    .hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.DELETE, "/api/v1/users/{id}")
+                    .hasRole("ADMIN")
                     .requestMatchers(HttpMethod.GET, "/api/v1/users")
                     .hasAnyRole("ADMIN", "PROFESSOR")
                     .requestMatchers(HttpMethod.GET, "/api/v1/users/{id}")
@@ -132,6 +162,36 @@ public class SecurityConfig {
                     .hasAnyRole("ADMIN", "PROFESSOR")
                     .requestMatchers(HttpMethod.GET, "/api/v1/dashboard/class-averages")
                     .hasAnyRole("ADMIN", "PROFESSOR", "STUDENT")
+
+                    // specialism
+                    .requestMatchers(HttpMethod.POST, "/api/v1/specialisms")
+                    .hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.GET, "/api/v1/specialisms")
+                    .hasAnyRole("ADMIN", "PROFESSOR")
+                    .requestMatchers(HttpMethod.GET, "/api/v1/specialisms/{id}")
+                    .hasAnyRole("ADMIN", "PROFESSOR")
+                    .requestMatchers(HttpMethod.PUT, "/api/v1/specialisms/{id}")
+                    .hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.DELETE, "/api/v1/specialisms/{id}")
+                    .hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.PUT, "/api/v1/specialisms/{id}/reactivate")
+                    .hasRole("ADMIN")
+
+                    // evaluation
+                    .requestMatchers(HttpMethod.GET, "/api/v1/evaluations/all")
+                    .hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.POST, "/api/v1/evaluations")
+                    .hasRole("PROFESSOR")
+                    .requestMatchers(HttpMethod.GET, "/api/v1/evaluations")
+                    .hasAnyRole("ADMIN", "PROFESSOR", "STUDENT")
+                    .requestMatchers(HttpMethod.GET, "/api/v1/evaluations/{id}")
+                    .hasAnyRole("ADMIN", "PROFESSOR", "STUDENT")
+                    .requestMatchers(HttpMethod.PUT, "/api/v1/evaluations/{id}")
+                    .hasRole("PROFESSOR")
+                    .requestMatchers(HttpMethod.DELETE, "/api/v1/evaluations/{id}")
+                    .hasAnyRole("ADMIN", "PROFESSOR")
+                    .requestMatchers(HttpMethod.PUT, "/api/v1/evaluations/{id}/reactivate")
+                    .hasRole("ADMIN")
 
                     // all
                     .anyRequest()

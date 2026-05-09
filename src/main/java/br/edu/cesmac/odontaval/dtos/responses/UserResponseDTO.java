@@ -19,4 +19,5 @@ public class UserResponseDTO {
   private String email;
   private Set<RoleResponseDTO> roles;
   private LocalDateTime createdAt;
+  private Boolean deleted;
 }

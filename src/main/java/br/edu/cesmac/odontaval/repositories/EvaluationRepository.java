@@ -27,4 +27,6 @@ public interface EvaluationRepository extends JpaRepository<EvaluationEntity, Lo
 
   @Query("SELECT DISTINCT e.academicSemester FROM EvaluationEntity e WHERE e.deleted = false ORDER BY e.academicSemester DESC")
   List<String> findDistinctAcademicSemesters();
+
+  List<EvaluationEntity> findAllByOrderByCreatedAtDesc();
 }

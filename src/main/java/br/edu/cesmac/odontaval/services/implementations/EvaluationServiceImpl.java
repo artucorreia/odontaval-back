@@ -94,6 +94,13 @@ public class EvaluationServiceImpl implements EvaluationService {
 
   @Override
   @Transactional(rollbackOn = Exception.class)
+  public List<EvaluationEntity> findAllIncludingDeleted() {
+    log.info("Finding all evaluations including deleted");
+    return evaluationRepository.findAllByOrderByCreatedAtDesc();
+  }
+
+  @Override
+  @Transactional(rollbackOn = Exception.class)
   public List<EvaluationEntity> findByStudentId(UUID studentId) {
     log.info("Finding evaluations by studentId: {}", studentId);
     return evaluationRepository.findByStudentIdAndDeletedFalseOrderByCreatedAtDesc(studentId);
@@ -154,6 +161,17 @@ public class EvaluationServiceImpl implements EvaluationService {
     evaluationEntity.setDeleted(true);
     evaluationEntity.setDeletedAt(LocalDateTime.now());
 
+    evaluationRepository.save(evaluationEntity);
+  }
+
+  @Override
+  @Transactional(rollbackOn = Exception.class)
+  public void reactivate(Long id) {
+    log.info("Reactivating evaluation with id: {}", id);
+    EvaluationEntity evaluationEntity = findById(id);
+    evaluationEntity.setDeleted(false);
+    evaluationEntity.setDeletedAt(null);
+    evaluationEntity.setDeletedBy(null);
     evaluationRepository.save(evaluationEntity);
   }
 

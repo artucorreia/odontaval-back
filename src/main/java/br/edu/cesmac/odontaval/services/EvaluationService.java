@@ -10,6 +10,8 @@ public interface EvaluationService {
 
   List<EvaluationEntity> findAll();
 
+  List<EvaluationEntity> findAllIncludingDeleted();
+
   List<EvaluationEntity> findByStudentId(UUID studentId);
 
   EvaluationEntity findById(Long id);
@@ -17,4 +19,6 @@ public interface EvaluationService {
   void update(Long id, EvaluationEntity evaluationEntity);
 
   void delete(Long id);
+
+  void reactivate(Long id);
 }
