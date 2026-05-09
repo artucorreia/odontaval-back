@@ -1,5 +1,6 @@
 package br.edu.cesmac.odontaval.config;
 
+import br.edu.cesmac.odontaval.security.ApiKeyFilter;
 import br.edu.cesmac.odontaval.security.SecurityFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -24,6 +25,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
   private final SecurityFilter securityFilter;
+  private final ApiKeyFilter apiKeyFilter;
 
   @Profile("dev")
   @Bean
@@ -90,6 +92,8 @@ public class SecurityConfig {
                     // all
                     .anyRequest()
                     .hasAnyRole("ADMIN", "STUDENT", "PROFESSOR"))
+        // api key filter
+        .addFilterBefore(apiKeyFilter, UsernamePasswordAuthenticationFilter.class)
         // jwt filter
         .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
     return http.build();
@@ -132,6 +136,8 @@ public class SecurityConfig {
                     // all
                     .anyRequest()
                     .hasAnyRole("ADMIN", "STUDENT", "PROFESSOR"))
+        // api key filter
+        .addFilterBefore(apiKeyFilter, UsernamePasswordAuthenticationFilter.class)
         // jwt filter
         .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
     return http.build();

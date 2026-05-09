@@ -10,11 +10,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -27,6 +30,10 @@ public class SecurityFilter extends OncePerRequestFilter {
   private final UserService userService;
   private final ValidateToken validateToken;
 
+  @Autowired
+  @Qualifier("handlerExceptionResolver")
+  private HandlerExceptionResolver resolver;
+
   @Override
   protected void doFilterInternal(
       HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -36,7 +43,7 @@ public class SecurityFilter extends OncePerRequestFilter {
       if (token != null) {
         UUID userId = validateToken.validate(token);
         if (userId == null)
-          throw new OdontAvalException("Token iválido ou expirado", HttpStatus.FORBIDDEN);
+          throw new OdontAvalException("Token inválido ou expirado", HttpStatus.FORBIDDEN);
 
         UserEntity user = userService.findById(userId);
         if (user.getDeleted()) throw new OdontAvalException("Usuário inativo", HttpStatus.FORBIDDEN);
@@ -48,11 +55,17 @@ public class SecurityFilter extends OncePerRequestFilter {
                 customUserDetails.getUser(), null, customUserDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
       }
-
-      filterChain.doFilter(request, response);
+    } catch (OdontAvalException ex) {
+      resolver.resolveException(request, response, null, ex);
+      return;
     } catch (Exception ex) {
-      throw new OdontAvalException("Erro na validação do token", HttpStatus.FORBIDDEN);
+      resolver.resolveException(
+          request, response, null,
+          new OdontAvalException("Erro na validação do token", HttpStatus.FORBIDDEN));
+      return;
     }
+
+    filterChain.doFilter(request, response);
   }
 
   private String recoverToken(HttpServletRequest request) {

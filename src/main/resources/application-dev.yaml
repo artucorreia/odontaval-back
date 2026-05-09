@@ -5,6 +5,8 @@ web:
   allowedOrigins: ${ALLOWED_ORIGINS:http://localhost}
 
 security:
+  api:
+    key: ${API_KEY:password}
   token:
     issuer: ${TOKEN_ISSUER:LockBox}
     secret: ${TOKEN_SECRET:secret}

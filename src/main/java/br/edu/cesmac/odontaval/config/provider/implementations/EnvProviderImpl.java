@@ -12,6 +12,9 @@ public class EnvProviderImpl implements EnvProvider {
   @Value("${web.allowedOrigins}")
   private String allowedOrigins;
 
+  @Value("${security.api.key}")
+  private String apiKey;
+
   @Value("${security.token.issuer}")
   private String tokenIssuer;
 
@@ -24,6 +27,11 @@ public class EnvProviderImpl implements EnvProvider {
   @Override
   public String getAllowedOrigins() {
     return allowedOrigins;
+  }
+
+  @Override
+  public String getApiKey() {
+    return apiKey;
   }
 
   @Override

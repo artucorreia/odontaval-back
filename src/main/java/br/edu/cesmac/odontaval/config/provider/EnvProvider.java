@@ -5,6 +5,8 @@ import java.time.Duration;
 public interface EnvProvider {
   String getAllowedOrigins();
 
+  String getApiKey();
+
   String getTokenIssuer();
 
   String getTokenSecret();
