@@ -48,17 +48,17 @@ public class EvaluationController {
     List<EvaluationEntity> evaluations = evaluationService.findAllIncludingDeleted();
     List<EvaluationResponseDTO> data =
         evaluationMapper.evaluationEntitiesToResponseDTOs(evaluations);
-    return ResponseEntity.ok(
-        new ResponseDTO<>(true, null, EvaluationConstant.STATUS_200, data));
+    return ResponseEntity.ok(new ResponseDTO<>(true, null, EvaluationConstant.STATUS_200, data));
   }
 
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<ResponseDTO<List<EvaluationResponseDTO>>> findAll(
       @RequestParam(required = false) UUID studentId) {
 
-    List<EvaluationEntity> evaluations = studentId != null
-        ? evaluationService.findByStudentId(studentId)
-        : evaluationService.findAll();
+    List<EvaluationEntity> evaluations =
+        studentId != null
+            ? evaluationService.findByStudentId(studentId)
+            : evaluationService.findAll();
 
     List<EvaluationResponseDTO> data =
         evaluationMapper.evaluationEntitiesToResponseDTOs(evaluations);
@@ -110,7 +110,6 @@ public class EvaluationController {
   @PutMapping(value = "/{id}/reactivate", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<ResponseDTO<Object>> reactivate(@PathVariable Long id) {
     evaluationService.reactivate(id);
-    return ResponseEntity.ok(
-        new ResponseDTO<>(true, null, EvaluationConstant.STATUS_200, null));
+    return ResponseEntity.ok(new ResponseDTO<>(true, null, EvaluationConstant.STATUS_200, null));
   }
 }

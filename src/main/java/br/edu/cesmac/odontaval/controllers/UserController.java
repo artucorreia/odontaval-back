@@ -50,18 +50,26 @@ public class UserController {
     return ResponseEntity.ok(new ResponseDTO<>(true, null, UserConstant.STATUS_200, data));
   }
 
-  @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<ResponseDTO<Void>> insert(@Valid @RequestBody AdminUserInsertRequestDTO dto) {
+  @PostMapping(
+      consumes = MediaType.APPLICATION_JSON_VALUE,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<ResponseDTO<Void>> insert(
+      @Valid @RequestBody AdminUserInsertRequestDTO dto) {
     UserEntity newUser = new UserEntity();
     newUser.setName(dto.getName());
     newUser.setEmail(dto.getEmail());
     newUser.setPassword(dto.getPassword());
     userService.insertWithRole(newUser, dto.getRole());
     return ResponseEntity.status(HttpStatus.CREATED)
-        .body(new ResponseDTO<>(true, "Usuário criado com sucesso", HttpStatus.CREATED.value(), null));
+        .body(
+            new ResponseDTO<>(
+                true, "Usuário criado com sucesso", HttpStatus.CREATED.value(), null));
   }
 
-  @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+  @PutMapping(
+      value = "/{id}",
+      produces = MediaType.APPLICATION_JSON_VALUE,
+      consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<ResponseDTO<UserResponseDTO>> update(
       @PathVariable UUID id, @Valid @RequestBody UserUpdateRequestDTO dto) {
     UserEntity updated = userService.update(id, dto);
@@ -69,21 +77,30 @@ public class UserController {
     return ResponseEntity.ok(new ResponseDTO<>(true, null, UserConstant.STATUS_200, data));
   }
 
-  @PutMapping(value = "/{id}/password", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+  @PutMapping(
+      value = "/{id}/password",
+      produces = MediaType.APPLICATION_JSON_VALUE,
+      consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<ResponseDTO<Void>> updatePassword(
       @PathVariable UUID id, @Valid @RequestBody PasswordUpdateRequestDTO dto) {
     userService.updatePassword(id, dto);
     return ResponseEntity.ok(new ResponseDTO<>(true, null, UserConstant.STATUS_200, null));
   }
 
-  @PutMapping(value = "/{id}/role", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+  @PutMapping(
+      value = "/{id}/role",
+      produces = MediaType.APPLICATION_JSON_VALUE,
+      consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<ResponseDTO<Void>> updateRole(
       @PathVariable UUID id, @Valid @RequestBody UserRoleUpdateRequestDTO dto) {
     userService.updateRole(id, dto.getRole());
     return ResponseEntity.ok(new ResponseDTO<>(true, null, UserConstant.STATUS_200, null));
   }
 
-  @PutMapping(value = "/{id}/admin-reset-password", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+  @PutMapping(
+      value = "/{id}/admin-reset-password",
+      produces = MediaType.APPLICATION_JSON_VALUE,
+      consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<ResponseDTO<Void>> adminResetPassword(
       @PathVariable UUID id, @Valid @RequestBody AdminPasswordResetRequestDTO dto) {
     userService.adminResetPassword(id, dto.getNewPassword());
