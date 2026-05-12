@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class MailSenderServiceImpl implements MailSenderService {
-  private EnvProvider envProvider;
+  private final EnvProvider envProvider;
   private final JavaMailSender javaMailSender;
 
   @Override
