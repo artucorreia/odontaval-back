@@ -50,6 +50,10 @@ public class SecurityConfig {
                     .permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/auth/reset-password")
                     .permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/auth/confirm-email")
+                    .permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/auth/refresh")
+                    .permitAll()
 
                     // users
                     .requestMatchers(HttpMethod.GET, "/api/v1/users/all")
@@ -139,6 +143,10 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.POST, "/api/auth/password-recovery")
                     .permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/auth/reset-password")
+                    .permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/auth/confirm-email")
+                    .permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/auth/refresh")
                     .permitAll()
 
                     // users
