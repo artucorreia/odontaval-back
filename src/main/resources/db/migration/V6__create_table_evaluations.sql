@@ -1,4 +1,4 @@
-CREATE TABLE evaluations
+CREATE TABLE IF NOT EXISTS evaluations
 (
     id                   SERIAL PRIMARY KEY,
 
