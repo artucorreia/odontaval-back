@@ -15,4 +15,5 @@ public class TokenResponseDTO {
   private UUID userId;
   private String userRole;
   private String token;
+  private String refreshToken;
 }
