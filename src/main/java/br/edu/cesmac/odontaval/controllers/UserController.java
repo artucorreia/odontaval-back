@@ -103,7 +103,7 @@ public class UserController {
       consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<ResponseDTO<Void>> adminResetPassword(
       @PathVariable UUID id, @Valid @RequestBody AdminPasswordResetRequestDTO dto) {
-    userService.adminResetPassword(id, dto.getNewPassword());
+    userService.resetPassword(id, dto.getNewPassword());
     return ResponseEntity.ok(new ResponseDTO<>(true, null, UserConstant.STATUS_200, null));
   }
 

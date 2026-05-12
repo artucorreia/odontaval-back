@@ -148,8 +148,8 @@ public class UserServiceImpl implements UserService {
 
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public void adminResetPassword(UUID id, String newPassword) {
-    log.info("Admin resetting password for user: {}", id);
+  public void resetPassword(UUID id, String newPassword) {
+    log.info("Resetting password for user: {}", id);
     UserEntity user = findById(id);
     user.setPassword(encoder.encode(newPassword));
     userRepository.save(user);

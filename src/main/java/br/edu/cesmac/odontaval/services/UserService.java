@@ -26,7 +26,7 @@ public interface UserService {
 
   void updatePassword(UUID id, PasswordUpdateRequestDTO dto);
 
-  void adminResetPassword(UUID id, String newPassword);
+  void resetPassword(UUID id, String newPassword);
 
   void updateRole(UUID id, String roleName);
 

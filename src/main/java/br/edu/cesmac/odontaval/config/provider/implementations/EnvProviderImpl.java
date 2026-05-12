@@ -9,6 +9,9 @@ import java.time.Duration;
 @Component
 public class EnvProviderImpl implements EnvProvider {
 
+  @Value("${web.address}")
+  private String webAddress;
+
   @Value("${web.allowedOrigins}")
   private String allowedOrigins;
 
@@ -23,6 +26,11 @@ public class EnvProviderImpl implements EnvProvider {
 
   @Value("${security.token.duration}")
   private Duration tokenDuration;
+
+  @Override
+  public String getWebAddress() {
+    return webAddress;
+  }
 
   @Override
   public String getAllowedOrigins() {
