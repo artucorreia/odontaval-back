@@ -54,6 +54,8 @@ public class AuthController {
     UserEntity user = userService.findByEmail(authenticationDTO.getEmail().trim());
     if (user.getDeleted())
       throw new OdontAvalException("O usuário está inativo", HttpStatus.FORBIDDEN);
+    if (!user.getVerifiedEmail())
+      throw new OdontAvalException("O e-mail do usuário não foi confirmado", HttpStatus.FORBIDDEN);
 
     UsernamePasswordAuthenticationToken usernamePassword =
         new UsernamePasswordAuthenticationToken(
