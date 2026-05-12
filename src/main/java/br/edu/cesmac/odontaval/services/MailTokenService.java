@@ -11,4 +11,6 @@ public interface MailTokenService {
   String createConfirmToken(UserEntity user);
 
   void resetPassword(UUID userId, String recoveryToken, String newPassword);
+
+  void confirmEmail(UUID userId, String confirmToken);
 }

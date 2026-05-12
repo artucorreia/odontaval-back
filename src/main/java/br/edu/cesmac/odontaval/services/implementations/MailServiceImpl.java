@@ -36,7 +36,12 @@ public class MailServiceImpl implements MailService {
               .replace("${userEmail}", userEmail)
               .replace("${url}", url)
               .replace("${currentYear}", currentYear);
-      mailSenderService.send(userEmail, url, template);
+      mailSenderService.send(
+          "Recuperação de senha - ODONTAVAL",
+          "Acesse este link para alterar sua senha: " + url,
+          userEmail,
+          url,
+          template);
     } catch (Exception e) {
       throw new OdontAvalException(
           "Ocorreu um erro ao tentar enviar e-mail", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -44,7 +49,31 @@ public class MailServiceImpl implements MailService {
   }
 
   @Override
-  public void sendConfirmMail(UUID userId) {}
+  public void sendConfirmMail(String userEmail, UUID userId, String userName, String confirmToken) {
+    log.info("Preparing confirm mail message");
+    try {
+      String template = getMailTemplate("templates/confirm-mail.html");
+      String currentYear = String.valueOf(LocalDate.now().getYear());
+      String url =
+          envProvider.getWebAddress() + String.format("?userId=%s&token=%s", userId, confirmToken);
+
+      template =
+          template
+              .replace("${userName}", userName)
+              .replace("${url}", url)
+              .replace("${currentYear}", currentYear);
+      mailSenderService.send(
+          "Confirmação de e-mail - ODONTAVAL",
+          "Acesse este link para confirmar seu e-mail: " + url,
+          userEmail,
+          url,
+          template);
+    } catch (Exception e) {
+      log.error(e.getCause().toString());
+      throw new OdontAvalException(
+          "Ocorreu um erro ao tentar enviar e-mail", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
 
   private String getMailTemplate(String path) throws IOException {
     ClassPathResource resource = new ClassPathResource(path);

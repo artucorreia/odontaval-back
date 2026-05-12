@@ -71,6 +71,25 @@ public class MailTokenServiceImpl implements MailTokenService {
   }
 
   @Transactional(rollbackFor = Exception.class)
+  @Override
+  public void confirmEmail(UUID userId, String confirmToken) {
+    log.info("Confirming email for userId: {}", userId);
+    MailTokenEntity mailToken =
+        mailTokenRepository
+            .findByTokenAndUserIdAndType(confirmToken, userId, MailTokenType.CONFIRM)
+            .orElseThrow(
+                () -> new OdontAvalException("Token inválido", HttpStatus.BAD_REQUEST));
+
+    if (mailToken.getExpiresAt().isBefore(LocalDateTime.now())) {
+      mailTokenRepository.delete(mailToken);
+      throw new OdontAvalException("Token expirado", HttpStatus.BAD_REQUEST);
+    }
+
+    userService.verifyEmail(userId);
+    mailTokenRepository.delete(mailToken);
+  }
+
+  @Transactional(rollbackFor = Exception.class)
   @Scheduled(cron = "0 0 * * * *")
   public void deleteExpiredTokens() {
     log.info("Running scheduled cleanup of expired mail tokens");
