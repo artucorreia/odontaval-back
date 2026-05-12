@@ -9,6 +9,9 @@ import java.time.Duration;
 @Component
 public class EnvProviderImpl implements EnvProvider {
 
+  @Value("${spring.mail.username}")
+  private String mailUsername;
+
   @Value("${web.address}")
   private String webAddress;
 
@@ -26,6 +29,11 @@ public class EnvProviderImpl implements EnvProvider {
 
   @Value("${security.token.duration}")
   private Duration tokenDuration;
+
+  @Override
+  public String getMailUsername() {
+    return mailUsername;
+  }
 
   @Override
   public String getWebAddress() {
