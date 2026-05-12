@@ -48,37 +48,47 @@ public class UserSeeder implements Seeder {
 
     // ====================== STUDENTS ======================
 
+    LocalDateTime now = LocalDateTime.now();
+
     UserEntity firstStudent = new UserEntity();
     firstStudent.setName("Arthur Correia");
     firstStudent.setEmail("arthurcorreia.dev@gmail.com");
     firstStudent.setRoles(adminRoles);
     firstStudent.setPassword(encoder.encode("12345678"));
-    firstStudent.setCreatedAt(LocalDateTime.now());
+    firstStudent.setCreatedAt(now);
     firstStudent.setDeleted(false);
+    firstStudent.setVerifiedEmail(true);
+    firstStudent.setVerifiedEmailAt(now);
 
     UserEntity secondStudent = new UserEntity();
     secondStudent.setName("Hugo Steverson");
     secondStudent.setEmail("hugosteverson11@gmail.com");
     secondStudent.setRoles(studentRoles);
     secondStudent.setPassword(encoder.encode("12345678"));
-    secondStudent.setCreatedAt(LocalDateTime.now());
+    secondStudent.setCreatedAt(now);
     secondStudent.setDeleted(false);
+    secondStudent.setVerifiedEmail(true);
+    secondStudent.setVerifiedEmailAt(now);
 
     UserEntity thirdStudent = new UserEntity();
     thirdStudent.setName("Tirth Patel");
     thirdStudent.setEmail("tirthpatel@gmail.com");
     thirdStudent.setRoles(studentRoles);
     thirdStudent.setPassword(encoder.encode("12345678"));
-    thirdStudent.setCreatedAt(LocalDateTime.now());
+    thirdStudent.setCreatedAt(now);
     thirdStudent.setDeleted(false);
+    thirdStudent.setVerifiedEmail(true);
+    thirdStudent.setVerifiedEmailAt(now);
 
     UserEntity fourthStudent = new UserEntity();
     fourthStudent.setName("John Doe");
     fourthStudent.setEmail("johndoe@gmail.com");
     fourthStudent.setRoles(studentRoles);
     fourthStudent.setPassword(encoder.encode("12345678"));
-    fourthStudent.setCreatedAt(LocalDateTime.now());
+    fourthStudent.setCreatedAt(now);
     fourthStudent.setDeleted(false);
+    fourthStudent.setVerifiedEmail(true);
+    fourthStudent.setVerifiedEmailAt(now);
 
     // ====================== PROFESSORS ======================
 
@@ -87,16 +97,20 @@ public class UserSeeder implements Seeder {
     firstProfessor.setEmail("carlos.henrique@gmail.com");
     firstProfessor.setRoles(professorRoles);
     firstProfessor.setPassword(encoder.encode("12345678"));
-    firstProfessor.setCreatedAt(LocalDateTime.now());
+    firstProfessor.setCreatedAt(now);
     firstProfessor.setDeleted(false);
+    firstProfessor.setVerifiedEmail(true);
+    firstProfessor.setVerifiedEmailAt(now);
 
     UserEntity secondProfessor = new UserEntity();
     secondProfessor.setName("Dra. Fernanda Lima");
     secondProfessor.setEmail("fernanda.lima@gmail.com");
     secondProfessor.setRoles(professorRoles);
     secondProfessor.setPassword(encoder.encode("12345678"));
-    secondProfessor.setCreatedAt(LocalDateTime.now());
+    secondProfessor.setCreatedAt(now);
     secondProfessor.setDeleted(false);
+    secondProfessor.setVerifiedEmail(true);
+    secondProfessor.setVerifiedEmailAt(now);
 
     return new ArrayList<>(List.of(
         firstStudent,

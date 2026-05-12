@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -29,6 +30,15 @@ public class UserEntity extends BaseEntity {
 
   @Column(nullable = false)
   private String password;
+
+  @Column(name = "verified_email", nullable = false)
+  private Boolean verifiedEmail;
+
+  @Column(name = "verified_email_at")
+  private LocalDateTime verifiedEmailAt;
+
+  @Column(name = "verified_email_by")
+  private UUID verifiedEmailBy;
 
   @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(

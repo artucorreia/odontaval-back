@@ -28,6 +28,8 @@ public interface UserService {
 
   void resetPassword(UUID id, String newPassword);
 
+  void verifyEmail(UUID id);
+
   void updateRole(UUID id, String roleName);
 
   void delete(UUID id);

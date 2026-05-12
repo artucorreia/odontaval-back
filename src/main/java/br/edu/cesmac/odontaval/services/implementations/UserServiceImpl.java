@@ -80,6 +80,7 @@ public class UserServiceImpl implements UserService {
     newUser.setEmail(newUser.getEmail().trim());
     newUser.setCreatedAt(LocalDateTime.now());
     newUser.setDeleted(false);
+    newUser.setVerifiedEmail(false);
     String password = encoder.encode(newUser.getPassword());
     Set<RoleEntity> roles = roleService.findByName(List.of("STUDENT"));
     newUser.setPassword(password);
@@ -96,10 +97,22 @@ public class UserServiceImpl implements UserService {
     if (optionalUserEntity.isPresent())
       throw new OdontAvalException("O e-mail informado já está em uso", HttpStatus.BAD_REQUEST);
 
+    UUID adminId =
+        authenticatedUserService
+            .findCurrentUserId()
+            .orElseThrow(
+                () ->
+                    new OdontAvalException(
+                        "Ocorreu um erro ao buscar o usuário autenticado",
+                        HttpStatus.INTERNAL_SERVER_ERROR));
+
     newUser.setName(newUser.getName().trim());
     newUser.setEmail(newUser.getEmail().trim());
     newUser.setCreatedAt(LocalDateTime.now());
     newUser.setDeleted(false);
+    newUser.setVerifiedEmail(true);
+    newUser.setVerifiedEmailAt(LocalDateTime.now());
+    newUser.setVerifiedEmailBy(adminId);
     newUser.setPassword(encoder.encode(newUser.getPassword()));
 
     Set<RoleEntity> roles = roleService.findByName(List.of(roleName.toUpperCase()));
@@ -152,6 +165,16 @@ public class UserServiceImpl implements UserService {
     log.info("Resetting password for user: {}", id);
     UserEntity user = findById(id);
     user.setPassword(encoder.encode(newPassword));
+    userRepository.save(user);
+  }
+
+  @Transactional(rollbackFor = Exception.class)
+  @Override
+  public void verifyEmail(UUID id) {
+    log.info("Verifying email for user: {}", id);
+    UserEntity user = findById(id);
+    user.setVerifiedEmail(true);
+    user.setVerifiedEmailAt(LocalDateTime.now());
     userRepository.save(user);
   }
 
